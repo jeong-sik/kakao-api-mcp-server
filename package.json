@@ -1,0 +1,28 @@
+{
+  "name": "kakao-api-mcp-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "yarn build && node dist/index.js --mode=http --port=3000",
+    "start:stdio": "yarn build && node dist/index.js --mode=stdio",
+    "dev": "yarn build && node dist/index.js --mode=http --port=3000"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.8.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "axios": "^1.8.4",
+    "eventsource": "^3.0.6",
+    "node-fetch": "^3.3.2"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "servers": [
+    {
+      "name": "kakao-map",
+      "command": ["node", "dist/index.js", "--mode=stdio", "--kakao-api-key=your_kakao_api_key_here"]
+    }
+  ]
+} 
