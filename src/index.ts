@@ -805,47 +805,47 @@ function formatMobilityRouteResult(
   waypoints: WaypointResult[],
   params: z.infer<typeof findRouteSchema>
 ): string {
-  let result = '🗺️ 길찾기 결과\\n\\n';
-  result += `출발지: ${origin.place_name} (${origin.address_name})\\n`;
+  let result = '🗺️ 길찾기 결과\n\n';
+  result += `출발지: ${origin.place_name} (${origin.address_name})\n`;
 
   // 경유지가 있는 경우
   if (waypoints.length > 0) {
     const successWaypoints = waypoints.filter(wp => wp.success);
     if (successWaypoints.length > 0) {
-      result += '\\n경유지:\\n';
+      result += '\n경유지:\n';
       for (const [index, wp] of successWaypoints.entries()) { // forEach 대신 for...of 사용
-        result += `${index + 1}. ${wp.placeName} (${wp.addressName})\\n`;
+        result += `${index + 1}. ${wp.placeName} (${wp.addressName})\n`;
       }
     }
   }
 
-  result += `\\n목적지: ${destination.place_name} (${destination.address_name})\\n`;
-  result += `\\n이동 수단: ${getTransportationName(params.transportation_type)}\\n`;
+  result += `\n목적지: ${destination.place_name} (${destination.address_name})\n`;
+  result += `\n이동 수단: ${getTransportationName(params.transportation_type)}\n`;
 
   // 카카오모빌리티 API 결과 표시
   const summary = route.summary;
   if (summary && typeof summary === 'object') { // summary 타입 확인 추가
     if (typeof summary.distance === 'number') { // distance 타입 확인 추가
-      result += `\\n총 거리: ${formatDistance(summary.distance)}\\n`;
+      result += `\n총 거리: ${formatDistance(summary.distance)}\n`;
     }
     if (typeof summary.duration === 'number') { // duration 타입 확인 추가
-      result += `예상 소요 시간: ${formatDuration(summary.duration)}\\n`;
+      result += `예상 소요 시간: ${formatDuration(summary.duration)}\n`;
     }
 
     // 택시 요금 표시
     if (summary.fare && typeof summary.fare === 'object' && typeof summary.fare.taxi === 'number') { // 타입 확인 추가
-      result += `예상 택시 요금: ${summary.fare.taxi.toLocaleString()}원\\n`;
+      result += `예상 택시 요금: ${summary.fare.taxi.toLocaleString()}원\n`;
     }
 
     // 통행 요금 표시
     if (summary.fare && typeof summary.fare === 'object' && typeof summary.fare.toll === 'number' && summary.fare.toll > 0) { // 타입 확인 추가
-      result += `통행 요금: ${summary.fare.toll.toLocaleString()}원\\n`;
+      result += `통행 요금: ${summary.fare.toll.toLocaleString()}원\n`;
     }
   }
 
   // 교통 정보 표시
   if (params.traffic_info && Array.isArray(route.sections)) { // sections 타입 확인 추가
-    result += '\\n📊 교통 상황 요약:\\n';
+    result += '\n📊 교통 상황 요약:\n';
 
     let totalDistance = 0;
     let totalCongestionDistance = 0;
@@ -877,10 +877,10 @@ function formatMobilityRouteResult(
       const slowPercent = Math.round((totalSlowDistance / totalDistance) * 100);
       const smoothPercent = 100 - congestionPercent - heavyPercent - slowPercent;
       
-      result += `🟢 원활: ${smoothPercent}%\\n`;
-      result += `🟡 서행: ${slowPercent}%\\n`;
-      result += `🟠 지체: ${heavyPercent}%\\n`;
-      result += `🔴 정체: ${congestionPercent}%\\n`;
+      result += `🟢 원활: ${smoothPercent}%\n`;
+      result += `🟡 서행: ${slowPercent}%\n`;
+      result += `🟠 지체: ${heavyPercent}%\n`;
+      result += `🔴 정체: ${congestionPercent}%\n`;
     }
     
     // 주요 정체 구간 표시 (최대 3개)
@@ -904,10 +904,10 @@ function formatMobilityRouteResult(
       congestionRoads.sort((a, b) => b.distance - a.distance);
       
       if (congestionRoads.length > 0) {
-        result += '\\n주요 정체 구간:\\n';
+        result += '\n주요 정체 구간:\n';
         for(const road of congestionRoads.slice(0, 3)) {
           const trafficEmoji = road.traffic_state === 4 ? '🔴' : '🟠';
-          result += `${trafficEmoji} ${road.name} (${formatDistance(road.distance)})\\n`;
+          result += `${trafficEmoji} ${road.name} (${formatDistance(road.distance)})\n`;
         }
       }
     }
@@ -915,7 +915,7 @@ function formatMobilityRouteResult(
 
   // 카카오맵 링크
   const mapUrl = `https://map.kakao.com/?sName=${encodeURIComponent(origin.place_name)}&eName=${encodeURIComponent(destination.place_name)}`;
-  result += `\\n카카오맵에서 보기: ${mapUrl}\\n`;
+  result += `\n카카오맵에서 보기: ${mapUrl}\n`;
 
   return result;
 }
@@ -928,23 +928,23 @@ function formatBasicRouteResult(
   params: z.infer<typeof findRouteSchema>,
   mapUrl: string
 ): string {
-  let result = '🗺️ 길찾기 결과\\n\\n';
-  result += `출발지: ${origin.place_name} (${origin.address_name})\\n`;
+  let result = '🗺️ 길찾기 결과\n\n';
+  result += `출발지: ${origin.place_name} (${origin.address_name})\n`;
 
   if (waypoints.length > 0) {
     const successWaypoints = waypoints.filter(wp => wp.success && wp.placeName && wp.addressName);
     if (successWaypoints.length > 0) {
-      result += '\\n경유지:\\n';
+      result += '\n경유지:\n';
       successWaypoints.forEach((wp, index) => {
-        result += `${index + 1}. ${wp.placeName} (${wp.addressName})\\n`;
+        result += `${index + 1}. ${wp.placeName} (${wp.addressName})\n`;
       });
     }
   }
 
-  result += `\\n목적지: ${destination.place_name} (${destination.address_name})\\n`;
-  result += `\\n이동 수단: ${getTransportationName(params.transportation_type)}\\n`;
-  result += `\\n카카오맵 길찾기: ${mapUrl}\\n`;
-  result += '\\n상세 경로 및 소요 시간은 카카오맵 링크를 통해 확인하세요.';
+  result += `\n목적지: ${destination.place_name} (${destination.address_name})\n`;
+  result += `\n이동 수단: ${getTransportationName(params.transportation_type)}\n`;
+  result += `\n카카오맵 길찾기: ${mapUrl}\n`;
+  result += '\n상세 경로 및 소요 시간은 카카오맵 링크를 통해 확인하세요.';
 
   return result;
 }
